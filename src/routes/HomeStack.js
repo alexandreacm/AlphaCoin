@@ -10,7 +10,7 @@ const { Navigator, Screen } = createNativeStackNavigator();
 export default function HomeStack() {
   return (
     <Navigator initialRouteName='Home'>
-      <Screen name='Home' component={Home} />
+      <Screen name='Home' component={Home} options={{ headerShown: false }} />
       <Screen name='Login' component={Login} />
       <Screen name='RealTimeChart' component={RealTimeChart} />
     </Navigator>
