@@ -2,15 +2,15 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '@/screens/CryptoList';
-import RealTimeChart from '@/screens/RealTimeChart';
+import Login from '@/screens/Login';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
-export default function HomeStack() {
+export default function SignInStack() {
   return (
-    <Navigator initialRouteName='Home'>
+    <Navigator initialRouteName='Login'>
       <Screen name='Home' component={Home} options={{ headerShown: false }} />
-      <Screen name='RealTimeChart' component={RealTimeChart} />
+      <Screen name='Login' component={Login} options={{ headerShown: false }} />
     </Navigator>
   );
 }

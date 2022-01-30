@@ -5,6 +5,8 @@ const colors = {
   BG: '#f3f3f3',
   BLACK: '#000',
   WHITE: '#FFF',
+  PLACE_HOLDER: '#808080',
+  BG_LOGIN: '#b3b4ba',
 
   BORDER_BOTTOM_COLOR: 'rgba(218, 218, 218, 0.4)',
   BACKGROUND_SHADOW: 'rgba(0, 0, 0, 0.25)',

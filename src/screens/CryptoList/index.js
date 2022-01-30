@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { TextInput } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { LOADING_COINS, LOADING_FILTER_COINS } from '@/store/slices/coinSlice';
+
+import { AuthContext } from '@/contexts/AuthProvider';
 
 import {
   StyledContainer,
@@ -22,6 +24,7 @@ import CoinList from './CoinList';
 export default function CryptoList() {
   const dispatch = useDispatch();
   const [textToSearch, setTextToSearch] = useState('');
+  const { user } = useContext(AuthContext);
 
   const { isLoading, coinsData, hasError, errorMessage } = useSelector(
     ({ coins }) => coins
@@ -51,7 +54,7 @@ export default function CryptoList() {
   return (
     <StyledContainer>
       <Header
-        userName='Alexandre Marques'
+        userName={user && user}
         backgroundColor={colors.PRIMARY}
         isFocused={isFocused}
       />

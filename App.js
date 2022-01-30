@@ -1,6 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 
+import AuthProvider from '@/contexts/AuthProvider';
+
 import { NavigationContainer } from '@react-navigation/native';
 
 import ThemeProvider from '@/components/ThemeProvider';
@@ -15,7 +17,9 @@ export default function App() {
       <NavigationContainer>
         <ThemeProvider>
           <Provider store={store}>
-            <Routes />
+            <AuthProvider>
+              <Routes />
+            </AuthProvider>
           </Provider>
         </ThemeProvider>
       </NavigationContainer>
