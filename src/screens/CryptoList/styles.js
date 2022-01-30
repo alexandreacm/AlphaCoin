@@ -165,6 +165,21 @@ const StyledRenderItemTextRight = styled.View`
   align-items: flex-end;
 `;
 
+const StyledNoInternetView = styled.View`
+  width: 100%;
+  height: 40px;
+  background-color: ${colors.DANGER};
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+`;
+
+const StyledNoInternetText = styled.Text`
+  font-size: 14px;
+  color: ${colors.WHITE};
+  font-family: ${useFontFamily(500)};
+`;
+
 export {
   StyledContainer,
   StyledHeader,
@@ -186,5 +201,7 @@ export {
   StyledRenderItemLeft,
   StyledRenderItemText,
   StyledRenderItemTextRight,
-  StyledRenderItemRight
+  StyledRenderItemRight,
+  StyledNoInternetView,
+  StyledNoInternetText
 };
