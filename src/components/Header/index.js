@@ -25,7 +25,7 @@ const Header = ({
   backgroundColor,
   backButtonColor,
   isFocused,
-  useName
+  userName
 }) => {
   return (
     <>
@@ -50,7 +50,7 @@ const Header = ({
               <StyledImage source={imgLogo} />
             </StyledContainerImage>
             <StyledContainerText>
-              <StyledLoginText>WellCome ({useName})</StyledLoginText>
+              <StyledLoginText>WellCome [{userName}]</StyledLoginText>
             </StyledContainerText>
           </>
         )}

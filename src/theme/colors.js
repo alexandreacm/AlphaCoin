@@ -14,7 +14,8 @@ const colors = {
   DANGER: '#EB001B',
   WARNING: '#F79E1B',
   WHITE: '#FFF',
-  GRAY: '#CDCDCD'
+  GRAY: '#CDCDCD',
+  LABEL_HIDDEN: '#CDCDCD'
 };
 
 export default colors;

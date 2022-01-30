@@ -1,28 +1,70 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { TextInput } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { LOADING_COINS } from '@/store/slices/coinSlice';
 
+import {
+  StyledContainer,
+  StyledHeader,
+  StyledButtonFilter,
+  StyledLabelText,
+  StyledViewAreaInput,
+  StyledIcon
+} from './styles';
+
 import Header from '@/components/Header';
+import Label from '@/components/Label';
+
 import colors from '@/theme/colors';
+import CoinList from './CoinList';
 
 export default function CryptoList() {
   const dispatch = useDispatch();
-  const { isLoading, coinsData } = useSelector(({ coins }) => coins);
+  const { isLoading, coinsData, hasError, errorMessage } = useSelector(
+    ({ coins }) => coins
+  );
   const isFocused = useIsFocused();
 
-  useEffect(() => {}, []);
+  const filterData = textToSearch => {
+    if (textToSearch.length) {
+      coinsData = coinsData.filter(item =>
+        item.name.toLowerCase().includes(textToSearch.toLowerCase())
+      );
+    } else {
+      dispatch(LOADING_COINS());
+    }
+  };
+
+  useEffect(() => {
+    dispatch(LOADING_COINS());
+  }, []);
 
   return (
-    <View>
+    <StyledContainer>
       <Header
-        useName='Alexandre Marques'
+        userName='Alexandre Marques'
         backgroundColor={colors.PRIMARY}
         isFocused={isFocused}
       />
-      <Text>CryptoList</Text>
-    </View>
+
+      <StyledHeader color={colors.PRIMARY}>
+        <StyledViewAreaInput>
+          <StyledIcon name='search' size={25} color={colors.BLACK} />
+          <TextInput
+            style={{ width: '85%', height: 35 }}
+            onChangeText={text => () => {}}
+            placeholder='Search...'
+            placeholderTextColor={colors.BLACK}
+          />
+        </StyledViewAreaInput>
+        <StyledButtonFilter>
+          <StyledLabelText fontWeight={400}>Filter</StyledLabelText>
+        </StyledButtonFilter>
+      </StyledHeader>
+
+      <CoinList data={coinsData} isLoading={isLoading} />
+    </StyledContainer>
   );
 }
