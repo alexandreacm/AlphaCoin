@@ -69,7 +69,9 @@ const StyledLoginText = styled.Text`
   font-family: ${useFontFamily(500)};
 `;
 
-const StyledTouchableOpacityBack = styled.TouchableOpacity``;
+const StyledTouchableOpacityBack = styled.TouchableOpacity`
+  margin-right: 40px;
+`;
 
 export {
   StyledContainer,

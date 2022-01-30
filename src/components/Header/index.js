@@ -33,7 +33,7 @@ const Header = ({
       {isFocused && <StatusBarColor backgroundColor={backgroundColor} />}
       <StyledContainer backgroundColor={backgroundColor} slim={slim}>
         {showBackButton ? (
-          <StyledContainerIcon>
+          <>
             <StyledTouchableOpacityBack
               onPress={onBackPress}
               backButtonColor={backButtonColor}
@@ -43,7 +43,10 @@ const Header = ({
             <StyledContainerImage>
               <StyledImage source={imgLogo} />
             </StyledContainerImage>
-          </StyledContainerIcon>
+            <StyledContainerText>
+              <StyledLoginText>WellCome [{userName}]</StyledLoginText>
+            </StyledContainerText>
+          </>
         ) : (
           <>
             <StyledContainerImage>

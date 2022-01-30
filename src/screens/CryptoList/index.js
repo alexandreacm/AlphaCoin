@@ -42,8 +42,6 @@ export default function CryptoList() {
   );
   const isFocused = useIsFocused();
 
-  console.log(user);
-
   const filterData = () => {
     if (textToSearch.length >= 1) {
       dispatch(LOADING_FILTER_COINS({ textToSearch, coinsData }));

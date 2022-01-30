@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Lottie from 'lottie-react-native';
 import Loading from '@/components/Loading';
@@ -25,6 +26,8 @@ import empty from '@/assets/animations/empty-list';
 import icDefault from '@/assets/icons/default.png';
 
 const CoinList = ({ data, isLoading }) => {
+  const { navigate } = useNavigation();
+
   const renderEmptyList = () => {
     if (isLoading && !data.length) return;
 
@@ -40,8 +43,15 @@ const CoinList = ({ data, isLoading }) => {
     );
   };
 
+  function handleNavigate(id) {
+    navigate('Chart', { id });
+  }
+
   const renderItem = ({ item }) => (
-    <View
+    <TouchableOpacity
+      onPress={() => {
+        handleNavigate(item?.id);
+      }}
       style={{
         flex: 1,
         flexDirection: 'row',
@@ -104,7 +114,7 @@ const CoinList = ({ data, isLoading }) => {
           </Label>
         </StyledRenderItemTextRight>
       </StyledRenderItemRight>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
