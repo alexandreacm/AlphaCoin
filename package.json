@@ -7,7 +7,21 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:coverage": "jest --coverage --watchAll false",
+    "commit": "npx git-cz"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "jest --passWithNoTests"
+    }
+  },
+  "lint-staged": {
+    "./src/*.{js,jsx,}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.0",
@@ -59,7 +73,9 @@
     "react-native-dotenv": "^2.4.3",
     "react-test-renderer": "17.0.2"
   },
-  "jest": {
-    "preset": "react-native"
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
