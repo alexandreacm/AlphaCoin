@@ -22,12 +22,31 @@ const coinSlice = createSlice({
       isLoading: false,
       hasError: true,
       errorMessage
+    }),
+    LOADING_FILTER_COINS: state => ({ ...state, isLoading: true }),
+    FILTER_COINS_SUCCESS: (state, { payload: { coinsData } }) => ({
+      ...state,
+      coinsData,
+      isLoading: false
+    }),
+    FILTER_COINS_FAILURE: (state, { payload: { errorMessage } }) => ({
+      ...state,
+      isLoading: false,
+      hasError: true,
+      errorMessage
     })
   }
 });
 
 const { actions, reducer } = coinSlice;
 
-export const { LOADING_COINS, COINS_SUCCESS, COINS_FAILURE } = actions;
+export const {
+  LOADING_COINS,
+  COINS_SUCCESS,
+  COINS_FAILURE,
+  LOADING_FILTER_COINS,
+  FILTER_COINS_SUCCESS,
+  FILTER_COINS_FAILURE
+} = actions;
 
 export default reducer;

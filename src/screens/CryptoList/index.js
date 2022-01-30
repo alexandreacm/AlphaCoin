@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { LOADING_COINS } from '@/store/slices/coinSlice';
+import { LOADING_COINS, LOADING_FILTER_COINS } from '@/store/slices/coinSlice';
 
 import {
   StyledContainer,
@@ -15,30 +15,37 @@ import {
 } from './styles';
 
 import Header from '@/components/Header';
-import Label from '@/components/Label';
 
 import colors from '@/theme/colors';
 import CoinList from './CoinList';
 
 export default function CryptoList() {
   const dispatch = useDispatch();
+  const [textToSearch, setTextToSearch] = useState('');
+
   const { isLoading, coinsData, hasError, errorMessage } = useSelector(
     ({ coins }) => coins
   );
   const isFocused = useIsFocused();
 
-  const filterData = textToSearch => {
-    if (textToSearch.length) {
-      coinsData = coinsData.filter(item =>
-        item.name.toLowerCase().includes(textToSearch.toLowerCase())
-      );
+  const filterData = () => {
+    if (textToSearch.length >= 1) {
+      dispatch(LOADING_FILTER_COINS({ textToSearch, coinsData }));
     } else {
       dispatch(LOADING_COINS());
     }
   };
 
-  useEffect(() => {
+  function loadingCoins() {
     dispatch(LOADING_COINS());
+  }
+
+  useEffect(() => {
+    filterData();
+  }, [textToSearch]);
+
+  useEffect(() => {
+    loadingCoins();
   }, []);
 
   return (
@@ -54,7 +61,8 @@ export default function CryptoList() {
           <StyledIcon name='search' size={25} color={colors.BLACK} />
           <TextInput
             style={{ width: '85%', height: 35 }}
-            onChangeText={text => () => {}}
+            value={textToSearch}
+            onChangeText={setTextToSearch}
             placeholder='Search...'
             placeholderTextColor={colors.BLACK}
           />
@@ -63,6 +71,18 @@ export default function CryptoList() {
           <StyledLabelText fontWeight={400}>Filter</StyledLabelText>
         </StyledButtonFilter>
       </StyledHeader>
+
+      {hasError && (
+        <Label
+          textAlign='center'
+          fontWeight={400}
+          fontSize={12}
+          marginBottom={8}
+          color={colors.DANGER}
+        >
+          {errorMessage}
+        </Label>
+      )}
 
       <CoinList data={coinsData} isLoading={isLoading} />
     </StyledContainer>

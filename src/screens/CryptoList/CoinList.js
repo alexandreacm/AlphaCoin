@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { View } from 'react-native';
 
 import Lottie from 'lottie-react-native';
 import Loading from '@/components/Loading';
@@ -40,7 +41,17 @@ const CoinList = ({ data, isLoading }) => {
   };
 
   const renderItem = ({ item }) => (
-    <StyledViewRenderItem>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.WHITE
+      }}
+    >
       <StyledRenderItemLeft>
         <StyledImage
           source={rateImages[item?.symbol.toUpperCase()] || icDefault}
@@ -93,7 +104,7 @@ const CoinList = ({ data, isLoading }) => {
           </Label>
         </StyledRenderItemTextRight>
       </StyledRenderItemRight>
-    </StyledViewRenderItem>
+    </View>
   );
 
   return (

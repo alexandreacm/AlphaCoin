@@ -65,6 +65,8 @@ const StyledLabel = styled.Text`
   font-family: ${({ fontWeight }) => useFontFamily(fontWeight)};
   line-height: ${({ lineHeight }) =>
     lineHeight ? handlePixels(lineHeight) : 0};
+  margin-bottom: ${({ marginBottom }) =>
+    marginBottom ? handlePixels(marginBottom) : 0};
 `;
 
 const StyledContainerRender = styled.View`
@@ -159,8 +161,8 @@ const StyledRenderItemText = styled.View`
 
 const StyledRenderItemTextRight = styled.View`
   flex: 1;
-  align-items: flex-end;
   justify-content: center;
+  align-items: flex-end;
 `;
 
 export {
