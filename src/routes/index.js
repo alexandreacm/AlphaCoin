@@ -1,29 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { USER_KEY } from '@/helpers/constants/storageKeys';
 
 import HomeStack from '@/routes/HomeStack';
-import SignInStack from '@/routes/SignInStack';
+import Login from '@/screens/Login';
+import { AuthContext } from '@/contexts/AuthProvider';
+
+const { Navigator, Screen } = createNativeStackNavigator();
 
 const Routes = () => {
-  const [Logged, setLogged] = useState(false);
+  const options = { headerShown: false };
+  const { user, Logged, checkingUserLogged } = useContext(AuthContext);
 
   useEffect(() => {
     SplashScreen.hide();
 
-    async function getUserName() {
+    async function getUserLocalStorage() {
       //await AsyncStorage.clear();
-      const userName = await AsyncStorage.getItem(USER_KEY);
-      setLogged(userName !== null);
+      const userStorage = await AsyncStorage.getItem(USER_KEY);
+
+      if (userStorage !== null) {
+        checkingUserLogged(userStorage);
+      }
     }
 
-    getUserName();
+    getUserLocalStorage();
   }, []);
 
-  if (!Logged) {
-    return <SignInStack />;
+  console.log('Logged', Logged);
+  console.log('user', user);
+
+  if (!Logged && user == null) {
+    return (
+      <Navigator>
+        <Screen name='SignIn' component={Login} options={options} />
+      </Navigator>
+    );
   }
 
   return <HomeStack />;

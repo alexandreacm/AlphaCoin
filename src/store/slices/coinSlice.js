@@ -34,6 +34,18 @@ const coinSlice = createSlice({
       isLoading: false,
       hasError: true,
       errorMessage
+    }),
+    LOADING_LOCAL_COINS: state => ({ ...state, isLoading: true }),
+    LOCAL_COINS_SUCCESS: (state, { payload: { coinsData } }) => ({
+      ...state,
+      coinsData,
+      isLoading: false
+    }),
+    LOCAL_COINS_FAILURE: (state, { payload: { errorMessage } }) => ({
+      ...state,
+      isLoading: false,
+      hasError: true,
+      errorMessage
     })
   }
 });
@@ -46,7 +58,10 @@ export const {
   COINS_FAILURE,
   LOADING_FILTER_COINS,
   FILTER_COINS_SUCCESS,
-  FILTER_COINS_FAILURE
+  FILTER_COINS_FAILURE,
+  LOADING_LOCAL_COINS,
+  LOCAL_COINS_SUCCESS,
+  LOCAL_COINS_FAILURE
 } = actions;
 
 export default reducer;

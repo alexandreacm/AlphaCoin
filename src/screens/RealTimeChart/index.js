@@ -9,7 +9,6 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import { USER_KEY } from '@/helpers/constants/storageKeys';
 
-import { AuthContext } from '@/contexts/AuthProvider';
 import Header from '@/components/Header';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,8 +23,7 @@ export default function RealTimeChart() {
 
   const { goBack } = useNavigation();
   const isFocused = useIsFocused();
-  const { user } = useContext(AuthContext);
-  const [userName, setUserName] = useState(user && user.userName);
+  const [user, setUser] = useState();
   const dispatch = useDispatch();
 
   const {
@@ -39,7 +37,7 @@ export default function RealTimeChart() {
   useEffect(() => {
     async function getUserName() {
       const userName = await AsyncStorage.getItem(USER_KEY);
-      if (userName !== null) setUserName(userName);
+      if (userName !== null) setUser(userName);
     }
 
     getUserName();
@@ -54,7 +52,7 @@ export default function RealTimeChart() {
         onBackPress={() => {
           goBack();
         }}
-        userName={userName}
+        userName={user}
         backgroundColor={colors.PRIMARY}
         isFocused={isFocused}
       />

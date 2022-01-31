@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -8,8 +8,8 @@ import { USER_KEY } from '@/helpers/constants/storageKeys';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOADING_COINS, LOADING_FILTER_COINS } from '@/store/slices/coinSlice';
 
-import { AuthContext } from '@/contexts/AuthProvider';
 import useConnection from '@/hooks/useConnection';
+import storage from '@/store/storage';
 
 import {
   StyledContainer,
@@ -31,8 +31,8 @@ import CoinList from './CoinList';
 export default function CryptoList() {
   const dispatch = useDispatch();
   const [textToSearch, setTextToSearch] = useState('');
-  const { user } = useContext(AuthContext);
-  const [userName, setUserName] = useState(user && user.userName);
+  const [user, setUser] = useState();
+  const [coins, setCoins] = useState([]);
 
   const { connected } = useConnection();
   const checkConnection = !connected && connected != null;
@@ -43,15 +43,26 @@ export default function CryptoList() {
   const isFocused = useIsFocused();
 
   const filterData = () => {
-    if (textToSearch.length >= 1) {
-      dispatch(LOADING_FILTER_COINS({ textToSearch, coinsData }));
-    } else {
-      dispatch(LOADING_COINS());
+    if (!checkConnection) {
+      if (textToSearch.length >= 1) {
+        dispatch(LOADING_FILTER_COINS({ textToSearch, coinsData }));
+      } else {
+        dispatch(LOADING_COINS());
+      }
     }
   };
 
-  function loadingCoins() {
-    dispatch(LOADING_COINS());
+  async function loadingCoins() {
+    const coinsStorage = await storage.getLocalCoins();
+
+    if (checkConnection) {
+      setCoins(JSON.parse(coinsStorage));
+      console.log('coinsStorage', coinsStorage.length);
+    }
+
+    if (!checkConnection) {
+      dispatch(LOADING_COINS());
+    }
   }
 
   useEffect(() => {
@@ -60,19 +71,18 @@ export default function CryptoList() {
 
   useEffect(() => {
     async function getUserName() {
-      const userName = await AsyncStorage.getItem(USER_KEY);
-      if (userName !== null) setUserName(userName);
+      const user = await AsyncStorage.getItem(USER_KEY);
+      if (user !== null) setUser(user);
     }
 
     getUserName();
-
     loadingCoins();
-  }, []);
+  }, [checkConnection]);
 
   return (
     <StyledContainer>
       <Header
-        userName={userName}
+        userName={user}
         backgroundColor={colors.PRIMARY}
         isFocused={isFocused}
       />
@@ -109,7 +119,7 @@ export default function CryptoList() {
           {errorMessage}
         </Label>
       )}
-      <CoinList data={coinsData} isLoading={isLoading} />
+      <CoinList data={coins.length ? coins : coinsData} isLoading={isLoading} />
     </StyledContainer>
   );
 }

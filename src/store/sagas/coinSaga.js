@@ -1,4 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
+import storage from '@/store/storage';
 
 import {
   LOADING_COINS,
@@ -6,7 +7,10 @@ import {
   COINS_FAILURE,
   LOADING_FILTER_COINS,
   FILTER_COINS_SUCCESS,
-  FILTER_COINS_FAILURE
+  FILTER_COINS_FAILURE,
+  LOADING_LOCAL_COINS,
+  LOCAL_COINS_SUCCESS,
+  LOCAL_COINS_FAILURE
 } from '@/store/slices/coinSlice';
 
 export function* loadingCoins() {
@@ -17,6 +21,8 @@ export function* loadingCoins() {
     );
 
     const { data } = yield response.json();
+
+    yield call(storage.setLocalCoins, data);
 
     yield put(COINS_SUCCESS({ coinsData: data }));
   } catch (error) {
@@ -39,8 +45,20 @@ export function* filterCoins({ payload: { textToSearch, coinsData } }) {
     );
   }
 }
+export function* loadingLocalCoins({ payload: { coinsStorage } }) {
+  try {
+    const coinsData = JSON.parse(coinsStorage);
+
+    yield put(LOCAL_COINS_SUCCESS({ coinsData }));
+  } catch (error) {
+    yield put(
+      LOCAL_COINS_FAILURE({ errorMessage: error.response.data.message })
+    );
+  }
+}
 
 export default function* watcher() {
   yield takeLatest(LOADING_COINS, loadingCoins);
   yield takeLatest(LOADING_FILTER_COINS, filterCoins);
+  yield takeLatest(LOADING_LOCAL_COINS, loadingLocalCoins);
 }
