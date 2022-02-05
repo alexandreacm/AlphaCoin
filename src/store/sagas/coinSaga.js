@@ -1,6 +1,10 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import storage from '@/store/storage';
 
+//It's possible like this
+//import { BASE_URL } from '@env';
+import { BASE_URL } from 'react-native-dotenv';
+
 import {
   LOADING_COINS,
   COINS_SUCCESS,
@@ -15,10 +19,7 @@ import {
 
 export function* loadingCoins() {
   try {
-    const response = yield call(
-      fetch,
-      'https://api.coinlore.net/api/tickers/?start=0&limit=50'
-    );
+    const response = yield call(fetch, `${BASE_URL}/tickers/?start=0&limit=50`);
 
     const { data } = yield response.json();
 
